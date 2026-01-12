@@ -44,7 +44,7 @@ man_help(){
     echo ''
     echo '        -b | --rtkbase-release'
     echo '                         Get last release of RTKBase:'
-    echo '                         https://github.com/Stefal/rtkbase/releases'
+    echo '                         https://github.com/szymonrychu/rtkbase/releases'
     echo ''
     echo '        -i | --rtkbase-repo <branch>'
     echo '                         Clone RTKBASE from github with the <branch> parameter used to select the branch.'
@@ -217,9 +217,9 @@ _compil_rtklib() {
 _rtkbase_repo(){
     #Get rtkbase repository
     if [[ -n "${1}" ]]; then
-      sudo -u "${RTKBASE_USER}" git clone --branch "${1}" --single-branch https://github.com/stefal/rtkbase.git
+      sudo -u "${RTKBASE_USER}" git clone --branch "${1}" --single-branch https://github.com/szymonrychu/rtkbase.git
     else
-      sudo -u "${RTKBASE_USER}" git clone https://github.com/stefal/rtkbase.git
+      sudo -u "${RTKBASE_USER}" git clone https://github.com/szymonrychu/rtkbase.git
     fi
     _add_rtkbase_path_to_environment
 
@@ -227,7 +227,7 @@ _rtkbase_repo(){
 
 _rtkbase_release(){
     #Get rtkbase latest release
-    sudo -u "${RTKBASE_USER}" wget https://github.com/stefal/rtkbase/releases/latest/download/rtkbase.tar.gz -O rtkbase.tar.gz
+    sudo -u "${RTKBASE_USER}" wget https://github.com/szymonrychu/rtkbase/releases/latest/download/rtkbase.tar.gz -O rtkbase.tar.gz
     sudo -u "${RTKBASE_USER}" tar -xvf rtkbase.tar.gz
     _add_rtkbase_path_to_environment
 
@@ -371,7 +371,7 @@ rtkbase_requirements(){
       
       #Installing requirements for Cellular modem. Installing them during the Armbian firstrun doesn't work because the network isn't fully up.
       sudo -u "${RTKBASE_USER}" "${rtkbase_path}/venv/bin/python" -m pip install nmcli  --extra-index-url https://www.piwheels.org/simple
-      sudo -u "${RTKBASE_USER}" "${rtkbase_path}/venv/bin/python" -m pip install git+https://github.com/Stefal/sim-modem.git
+      sudo -u "${RTKBASE_USER}" "${rtkbase_path}/venv/bin/python" -m pip install git+https://github.com/szymonrychu/sim-modem.git
 
 }
 
@@ -641,6 +641,7 @@ configure_gnss(){
             else
               echo 'Failed to configure the Gnss receiver'
               return 1
+            fi
         elif [[ $(python3 "${rtkbase_path}"/tools/nmea.py --file "${rtkbase_path}"/receiver_cfg/LC29HBS_Version.txt /dev/"${com_port}" ${com_port_settings%%:*} 3 2>/dev/null) =~ 'LC29HBS' ]]; then
           # Factory reset and configure the module
           python3 "${rtkbase_path}"/tools/nmea.py --verbose --file "${rtkbase_path}"/receiver_cfg/LC29HBS_Factory_Defaults.txt /dev/"${com_port}" ${com_port_settings%%:*} 3 >>"${rtkbase_path}"/logs/LC29HBS_Configure.log && \

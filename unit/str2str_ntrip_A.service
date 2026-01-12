@@ -2,8 +2,6 @@
 Description=RTKBase Ntrip A
 #After=network-online.target
 #Wants=network-online.target
-Requires=str2str_tcp.service
-After=str2str_tcp.service
 
 [Service]
 Type=simple
